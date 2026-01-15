@@ -294,17 +294,12 @@ def load_crime_data():
     base = Path(__file__).parent
     csv_path = base / "data" / "crime_geocoded.csv"
 
-    st.write("CSV path:", csv_path)
-    st.write("Exists:", csv_path.exists())
-
     if not csv_path.exists():
         return []
 
     df = pd.read_csv(csv_path)
-    st.write("CSV rows:", len(df))
-    st.write(df.head())
-
     return list(zip(df["lat"], df["lon"]))
+
 
 
 # @st.cache_data(show_spinner=False)
@@ -739,6 +734,7 @@ if st.button("ルートを検索"):
         st.error("エラーが発生しました")
 
         st.text(traceback.format_exc())
+
 
 
 

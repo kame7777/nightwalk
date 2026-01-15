@@ -471,7 +471,7 @@ if st.button("ルートを検索"):
         # 安全版 graph_from_place
         G = safe_graph_from_place(place)
 
-        crime_locations = load_crime_data("data/")
+        crime_locations = load_crime_data()
 
 
 
@@ -721,4 +721,5 @@ if st.button("ルートを検索"):
 
     except Exception:
         st.error("エラーが発生しました")
+
         st.text(traceback.format_exc())

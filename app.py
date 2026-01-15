@@ -290,14 +290,32 @@ import pandas as pd
 import streamlit as st
 
 @st.cache_data(show_spinner=False)
+def load_crime_data():
     base = Path(__file__).parent
     csv_path = base / "data" / "crime_geocoded.csv"
+
+    st.write("CSV path:", csv_path)
+    st.write("Exists:", csv_path.exists())
 
     if not csv_path.exists():
         return []
 
     df = pd.read_csv(csv_path)
+    st.write("CSV rows:", len(df))
+    st.write(df.head())
+
     return list(zip(df["lat"], df["lon"]))
+
+
+# @st.cache_data(show_spinner=False)
+#     base = Path(__file__).parent
+#     csv_path = base / "data" / "crime_geocoded.csv"
+
+#     if not csv_path.exists():
+#         return []
+
+#     df = pd.read_csv(csv_path)
+#     return list(zip(df["lat"], df["lon"]))
 
 
 # -----------------------

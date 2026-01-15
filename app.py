@@ -473,6 +473,8 @@ if st.button("ルートを検索"):
 
         crime_locations = load_crime_data()
 
+        st.write("犯罪地点数:", len(crime_locations))
+        st.write("犯罪地点サンプル:", crime_locations[:5])
 
 
         # --- 座標変換 ---
@@ -723,3 +725,4 @@ if st.button("ルートを検索"):
         st.error("エラーが発生しました")
 
         st.text(traceback.format_exc())
+

@@ -1,0 +1,13 @@
+# Caching
+cache/
+*.pyc
+__pycache__/
+
+# OS generated files
+.DS_Store
+
+# Virtual environment
+venv/
+.venv/
+env/
+.env

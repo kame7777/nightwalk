@@ -648,7 +648,14 @@ if st.button("ルートを検索"):
         m = folium.Map(location=orig_latlon, zoom_start=zoom)
 
         if crime_locations:
-            HeatMap(crime_locations, radius=15, blur=10).add_to(m)
+            HeatMap(
+                crime_locations,
+                radius=25,
+                blur=18,
+                min_opacity=0.4,
+                control=False
+            ).add_to(m)
+
 
         folium.PolyLine(route_latlon, color=route_color, weight=5, opacity=0.85).add_to(m)
         folium.Marker(location=orig_latlon, popup="出発地", icon=folium.Icon(color="green")).add_to(m)
@@ -734,6 +741,7 @@ if st.button("ルートを検索"):
         st.error("エラーが発生しました")
 
         st.text(traceback.format_exc())
+
 
 
 

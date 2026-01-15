@@ -721,4 +721,5 @@ if st.button("ルートを検索"):
 
     except Exception:
         st.error("エラーが発生しました")
+
         st.text(traceback.format_exc())

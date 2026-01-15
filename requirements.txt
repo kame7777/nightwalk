@@ -7,3 +7,5 @@ shapely
 pyproj
 geopandas
 pandas
+bcrypt
+

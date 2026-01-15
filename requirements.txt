@@ -8,4 +8,7 @@ pyproj
 geopandas
 pandas
 bcrypt
+scipy
+
+
 

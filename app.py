@@ -285,54 +285,21 @@ def detect_polarity(text, tags_text=None):
 # -----------------------
 # --- ジオコーディング & CSV読み込み ---
 # -----------------------
-@lru_cache(maxsize=None)
-def geocode_cached(query):
-    """ジオコーディング結果をキャッシュ"""
-    return ox.geocode(query)
+from pathlib import Path
+import pandas as pd
+import streamlit as st
 
-@st.cache_data
-def load_crime_data(folder="data/"):
-    """
-    フォルダ内のすべてのCSVを読み込み、犯罪地点の座標リストを返す
-    期待列: 市区町村（発生地）, 町丁目（発生地） の組み合わせで address を作る想定
-    """
-    all_locations = []
-    csv_files = glob.glob(folder + "*.csv")
+@st.cache_data(show_spinner=False)
+def load_crime_data():
+    base = Path(__file__).parent
+    csv_path = base / "data" / "crime_geocoded.csv"
 
-    if not csv_files:
-        # 空でも [] を返す（警告はUI側で表示）
+    if not csv_path.exists():
         return []
 
-    for csv_path in csv_files:
-        df = None
-        # まず utf-8 で試す
-        for enc in ("utf-8", "shift_jis", "cp932"):
-            try:
-                df = pd.read_csv(csv_path, encoding=enc)
-                break
-            except Exception:
-                df = None
-        if df is None:
-            st.warning(f"{csv_path} の読み込みに失敗しました（エンコーディング）。スキップします。")
-            continue
+    df = pd.read_csv(csv_path)
+    return list(zip(df["lat"], df["lon"]))
 
-        # 列名がある前提で処理
-        if "市区町村（発生地）" not in df.columns or "町丁目（発生地）" not in df.columns:
-            # 列名が違う場合はスキップ
-            st.warning(f"列名が不正のためスキップ: {csv_path}")
-            continue
-
-        df["address"] = df["市区町村（発生地）"].astype(str) + df["町丁目（発生地）"].astype(str)
-
-        for address in df["address"].dropna().unique():
-            try:
-                lat, lon = geocode_cached(address)
-                all_locations.append((lat, lon))
-            except Exception:
-                # ジオコーディング失敗は無視
-                continue
-
-    return all_locations
 
 # -----------------------
 # --- OSM 街灯取得 ---
